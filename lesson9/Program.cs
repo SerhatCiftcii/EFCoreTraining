@@ -95,15 +95,76 @@ Console.WriteLine("Hello, World!");
 #endregion
 
 
-/// <summary>
-/// 
-/// </summary>
-/// 
+
+
 
 #region VeriGüncelleme
+//veri tabanından o veriyi çekcezki güncellemeye tabi tutalım!***
+//EticaretContext context = new();
+//Urun urun = await context.Urunler.FirstOrDefaultAsync(x => x.UrunId == 3);
 
+//if (urun == null)
+//{
+//    Console.WriteLine("Böyle bir ürün yok");
+//}
+//if (urun != null)
+//{
+//    urun.UrunAdi = "Güncellenmiş Ürün123";
+//    urun.Fiyat = 555;
+//}
+//;
+//context.Urunler.Update(urun); //güncelleme işlemi
+//context.SaveChanges();
 #endregion
 
+#region ChangeTractor Nedir Kısaca açıklayınız.?
+//context üzerinden gelen verilerin takibinden sorumlu bir mekanizmadır.
+// bu takip mekanizması sayesinde context üzeriden gelen verilerle ilgili işlmeler neticesinde update yahut delete sorgularının oluşturulcağı anlaşılır.!
+#endregion
+
+#region Takip edilemyen Nesneler nasıl güncellenir?
+// EticaretContext context = new(); // yyanı context de n gelmıyor takip edilmeyior.nadir olsada gerek olabilir.
+//Urun urun = new Urun()
+//{
+//    UrunId = 3,
+//    UrunAdi = "Takip Edilemeyen Nesne",
+//    Fiyat = 999
+//};
+#endregion
+#region Update Fonksiyonu
+//ChangeTracker mekanizması tarafından takip edilmeyen nesnelerin güncellenmesi için kullanılır.
+//Update fonk kullanabilmek için kesinlike ilgili nesende id verilmelidir.***** 
+//context.Urunler.Update(urun);
+//await context.SaveChangesAsync();
+#endregion
+
+#region EntityState nedir?
+// Bir entity instancenın durumunu ifade eden bir referans tır.
+//EticaretContext context = new();
+//Urun u = new();
+//Console.WriteLine(context.Entry(u).State); //detached: //bağlı değil yani context e gelmemiş.
+#endregion
+
+#region Efcore açısından bir verinin güncellenmesini Gerktiğnii nasıl anlıyoruz.
+//EticaretContext context = new();
+//Urun urun = await context.Urunler.FirstOrDefaultAsync(x => x.UrunId == 3);
+//Console.WriteLine(context.Entry(urun).State); //Unchanged //değişmemiş VERİ TABANINDAN GELDİ VE DEĞİŞİKLİK YOK. UYUARUSU verir buray kadar yazıp bırakırsan.
+//urun.UrunAdi = "Değişmiş Ürün"; //burda modified olur. state durumu.
+//Console.WriteLine(context.Entry(urun).State); //Modified
+//await context.SaveChangesAsync(); //burda update sorgusu oluşur.
+//Console.WriteLine(context.Entry(urun).State); //Unchanged //güncelleme yapıldıktan sonra tekrar unchanged olur.
+#endregion
+
+#region Birden fazla veri güncellenirken. nelere dikkat etmeliyiz.
+//EticaretContext context = new();
+//var urunler = await context.Urunler.ToListAsync();
+//foreach (var item in urunler) //change tracker mekanizması ile takip ediliyıor contextden gelen veri default olarak takip edilir. 
+//{
+//    item.UrunAdi += "*";
+//// await context.SaveChangesAsync(); //böyle tek tek yaparsan maliyetli olur. savecahnges daha sonra çağır yani.
+//}
+//await context.SaveChangesAsync(); //toplu güncelleme işlemi
+#endregion
 public class EticaretContext : DbContext
 {
     public DbSet<Urun> Urunler { get; set; }
