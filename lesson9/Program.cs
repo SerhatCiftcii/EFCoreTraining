@@ -161,9 +161,55 @@ Console.WriteLine("Hello, World!");
 //foreach (var item in urunler) //change tracker mekanizması ile takip ediliyıor contextden gelen veri default olarak takip edilir. 
 //{
 //    item.UrunAdi += "*";
-//// await context.SaveChangesAsync(); //böyle tek tek yaparsan maliyetli olur. savecahnges daha sonra çağır yani.
+//// await context.SaveChangesAsync(); //böyle tek tek yaparsan maliyetli olur. savecahnges daha sonra çağır yani. allta foreachın altında yaz.
 //}
 //await context.SaveChangesAsync(); //toplu güncelleme işlemi
+#endregion
+
+#region Veri nasıl silinir?
+//EticaretContext context = new();
+//Urun urun = await context.Urunler.FindAsync(5);
+//if(urun is not null)
+//{
+//    context.Urunler.Remove(urun);
+//    await  context.SaveChangesAsync();
+//}
+//else
+//{
+//    Console.WriteLine("Böyle bir ürün yok");
+//}
+#endregion
+
+#region Silme işleminde ChangeTracker'in rolu
+//Change tarcker context üzerinden gelen verilerin takbiinden sorumlu mekanizmadır. Bu takip mekanizması sayesinde context üzerinden gelen verilerin ilgili işlmeler neticesinde yahut delete sorgularının oluşturulcağı anlaşılır.!
+#endregion
+#region Takip edilemen yani context den gelmeyen veriler nasıl siliniyor;?
+//EticaretContext context = new();
+//Urun u = new Urun() //idyi ccontext üzerinden almadık yani konubaşlığının matığı bu.
+//{
+//    UrunId = 3
+//};
+//context.Urunler.Remove(u); //böyle sileriz.
+//context.SaveChanges(); //böyle sileriz.
+#endregion
+#region Entity State ilede silinir.
+//EticaretContext context = new();
+//Urun u = new Urun()
+//{
+//    UrunId = 6
+//};
+//context.Entry(u).State = EntityState.Deleted; //böylede silebiliriz.
+//await context.SaveChangesAsync();
+#endregion
+#region SavecChAngesi etkili kullanalım.
+//HER TETİKLEDİĞİNDE BİR TRANSİStaciıon etkilenmesinde çağırılır. birden fazla veri silinir buda yanlış bi yaklaşım bi kere çağırmaya dikkat et. performans odaklı.
+#region RemoveRange birden fazla veri silme.
+//EticaretContext context = new();
+//List<Urun> urunler =await context.Urunler.Where(x => x.UrunId >= 14 && x.UrunId <= 16).ToListAsync(); //Iquaryble olarak gelir Ieunerable değil.
+//context.Urunler.RemoveRange(urunler); //toplu silme işlemi
+//await context.SaveChangesAsync();
+
+#endregion
 #endregion
 public class EticaretContext : DbContext
 {

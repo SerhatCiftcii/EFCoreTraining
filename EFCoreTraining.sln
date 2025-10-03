@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database_first", "ConsoleAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lesson9", "lesson9\lesson9.csproj", "{AD756B68-655A-421F-99A9-6323702D9D66}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Querying", "Querying\Querying.csproj", "{D1186D82-747F-4004-836F-E8D526BCAADB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AD756B68-655A-421F-99A9-6323702D9D66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD756B68-655A-421F-99A9-6323702D9D66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD756B68-655A-421F-99A9-6323702D9D66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1186D82-747F-4004-836F-E8D526BCAADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1186D82-747F-4004-836F-E8D526BCAADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1186D82-747F-4004-836F-E8D526BCAADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1186D82-747F-4004-836F-E8D526BCAADB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
