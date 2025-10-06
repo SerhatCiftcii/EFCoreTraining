@@ -164,11 +164,128 @@ EticaretContext context = new();
 #endregion
 
 
+/// <summary>
+/// tekil veri aşşağısı
+/// </summary>
 
+
+#region Tekil veri getiren sorgulama fonksiyonları
+// yapılan sorgda sadece tek bir verinin gelmesi amaçlanıyorsa Single yada SingleOrDefault kullanılır.
+//yapılan sorguda tek bir verinin gelmesi amaçlanıyorsa SingleAsync yada SingleOrDeafultAsync fonk. kullanılabilir. uniqe email varsa birden fazla email tutarsızlık gelirse bunun güvencesini bunla alabilirzi tekil veri eminliği yoksa patlar zaten. çoğul ve gelmiyorsa 
+#region SingleAsync
+//sorgu neticesinde birden fazla veri geliyorsa yada hiç gelmiyorsa her 2 durumdada exception fırlatır.
+#region tek kayıt geldiğinde
+//var urun = await context.Urunler.SingleAsync(x=>x.UrunId == 10); //tek kayıt gelirse sıkıntı yok
+//Console.WriteLine();
+#endregion
+
+#region Hiç Kayıt gelmediğinde
+//var urun = await context.Urunler.SingleAsync(x => x.UrunId == 1000); //tek kayıt gelirse sıkıntı yok
+//Console.WriteLine();
+#endregion
+
+#region Çok Kayıt geldiğinde
+//var urun = await context.Urunler.SingleAsync(x => x.UrunId > 10); //burda birden fazla kayıt gelirse exception fırlatır
+#endregion
+#endregion
+
+#region SingleOrDeafultAsync
+//eğerki sorgu neticesinde birden fazla veri gelmiyorsa exception fırlatır. ama hiç kayıt gelmiyorsa null döner.
+#region tek kayıt geldiğinde
+//var urun = await context.Urunler.SingleOrDefaultAsync(x=>x.UrunId == 10); //tek kayıt gelirse sıkıntı yok
+//Console.WriteLine();
+#endregion
+
+#region Hiç Kayıt gelmediğinde
+//var urun = await context.Urunler.SingleOrDefaultAsync(x => x.UrunId == 1000); //bu sefer SingleAsyncde exception fırlatırdı ama bunda null döner
+//Console.WriteLine();
+#endregion
+
+#region Çok Kayıt geldiğinde
+//var urun = await context.Urunler.SingleOrDefaultAsync(x => x.UrunId > 10); //burda  da birden fazla kayıt gelirse exception fırlatır
+//Console.WriteLine();
+#endregion
+#endregion
+
+
+// yapılan sorguda tek bir verinin gelmesi amaçlanıyorsa first yada firsordefault fonk. kullanılabilir. tekil elde etmek veriyi ahmet kullancısının bireşyi lazım ama birden fazla ahmet deolabilir ama ben 1 ini istiyorum.
+#region FirstAsync
+// Sorgu neticesinde verilerden ilkini getirir. eğerki hiç verigelmezse hata fırlatır.
+#region tek kayıt geldiğinde
+//var urun = await context.Urunler.FirstAsync(x=>x.UrunId == 10); //tek kayıt gelirse sıkıntı yok
+#endregion
+
+#region Hiç Kayıt gelmediğinde
+//var urun = await context.Urunler.FirstAsync(x => x.UrunId == 1000); //tek kayıtda hata fırlatır.
+
+#endregion
+
+#region Çok Kayıt geldiğinde
+//var urun = await context.Urunler.FirstAsync(x => x.UrunId > 100);
+//// çok kayıt gelirse ilkini getirir. exception fırlatmaz
+#endregion
+#endregion
+
+#region FirsOrDefaultAsync
+//Sorgu neticesinde elde edilen verilerden ilkini getirir eğerki hiçveri gelmezse default oalarak null değerini döndürür.
+#region tek kayıt geldiğinde
+//var urun = await context.Urunler.FirstOrDefaultAsync(x => x.UrunId == 10); //tek kayıt gelirse sıkıntı yok 
+
+#endregion
+
+#region Hiç Kayıt gelmediğinde
+//var urun = await context.Urunler.FirstOrDefaultAsync(x => x.UrunId == 1000); //bu sefer  bunda null döner
+
+#endregion
+
+#region Çok Kayıt geldiğinde
+//var urun = await context.Urunler.FirstOrDefaultAsync(x => x.UrunId > 10); //burda  da birden fazla kayıt gelirse İLKİNİ bizee dönderir yoksa exception fırlatmaz
+
+#endregion
+#endregion
+
+#region SingleAsync , SingleOrDefaultAsync , FirstAsync ,FirstOrDeafultAsync fok. karşılaştırılması
+
+#endregion
+
+#region FindAsync => include ile kullanılamaz yad where ile kullanılamaz
+// Primary key üzerinden tekil veri getirmek için kullanılır. eğerki birden fazla primary key varsa tüm primary key değerleri parametre olarak verilmelidir. findasync sadece primary key ler için geçerlidir. başka kolonlar için kullanılamaz.
+//var urun =await context.Urunler.FindAsync(10); //tek primary key varsa böyle kullanılır
+#region Composite Primary key durumu
+var urunparca = await context.UrunParcalar.FindAsync(10,1);
+
+//ürünparca tablosunda 2 tane primary key var urunid ve parcaid 10 ve 1 verdik
+//composite primary key varsa tüm primary key ler parametre olarak verilir
+#endregion
+#endregion
+
+#region LastAsync OrderBy ile kullanılır
+//first ve firstordefaultun tam tersi olarak çalışır. sorgu neticesinde elde edilen verilerin sonuncusunu getirir. eğerki hiç veri gelmezse hata fırlatır.
+
+//var urun = await context.Urunler.OrderBy(u =>u.UrunAdi).LastAsync(x => x.UrunId >=10); //burda  da birden fazla kayıt gelirse SONUNCUSUNU bizee dönderir yoksa exception fırlatmaz
+//Console.WriteLine(urun.UrunAdi);
+#endregion
+
+#region LasOrDefaultAsync
+//firstordefaultun tam tersi olarak çalışır. sorgu neticesinde elde edilen verilerin sonuncusunu getirir. eğerki hiç veri gelmezse null döner.
+
+//var urun = await context.Urunler.OrderBy(u => u.UrunAdi).LastOrDefaultAsync(x => x.UrunId >= 10); //burda  da birden fazla kayıt gelirse SONUNCUSUNU bizee dönderir yoksa exception fırlatmaz
+#endregion
+#endregion
+
+
+#region Diğer Sorgulama Fonksiyonları
+
+#endregion
+
+
+Console.WriteLine();
 
 public class EticaretContext : DbContext
 {
     public DbSet<Urun> Urunler { get; set; }
+    public DbSet<Parca> Parcalar { get; set; }
+    public DbSet<UrunParca> UrunParcalar { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -177,7 +294,11 @@ public class EticaretContext : DbContext
         //lazyloadıngle çalışıcak mı çalışmıcak mı???? => tam anla tam anlamadım.
         optionsBuilder.UseSqlServer("Server=SERHAT\\SQLEXPRESS;Database=EticaretDB123;User Id=sa;Password=1234;TrustServerCertificate=True;");
 
-
+    }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<UrunParca>()
+            .HasKey(up => new { up.UrunId, up.ParcaId }); //composite key tanımladık
     }
 
 }
@@ -197,4 +318,11 @@ public class Urun
     public int Id { get; set; }
     public string ParcaAdi { get; set; }
   
+}
+public class UrunParca
+{
+    public int UrunId { get; set; } 
+    public Urun Urun { get; set; }
+    public int ParcaId { get; set; }
+    public Parca Parca { get; set; }
 }
