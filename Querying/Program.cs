@@ -275,7 +275,52 @@ var urunparca = await context.UrunParcalar.FindAsync(10,1);
 
 
 #region Diğer Sorgulama Fonksiyonları
+#region CountAsync (integer döner)
+//oluşturulan sorgunun execute edilmesi sonucunda kaç adet satırının elde edilmesini sayısal olarak bildiren fonksiyondur.
+//var adet = (await context.Urunler.ToListAsync()).Count; //burda tolistasync ile verileri aldık sonra count ile saydık maliyetli birşey.
+//var adet2 = await context.Urunler.CountAsync(); //böylede olur tolistasync e gerek yok performans odaklı
+//var adet3 = await context.Urunler.Where(x => x.UrunId >= 10).CountAsync(); //böylede olur tolistasync e gerek yok
+//Console.WriteLine(adet3);
+#endregion
+#region LongCountAsync
+////çok büyük sayıla varsa long cinsinden aynı işlmei yapcaz counttdaki gibi
+////var adet4 = await context.Urunler.LongCountAsync();
+//var adet4 = await context.Urunler.LongCountAsync(x=>x.Fiyat % 7 ==0); //şartlı sorgu burayda yazılabilir.
+#endregion
+#region AnyAsync
+//// tsqlde-exists gibi çalışır. sorgu neticesinde en az bir kayıt geliyorsa true geliyorsa false döner.
+////varmı yokmu true-false (boolean)
+//var sonucVarmi = await context.Urunler.AnyAsync(x=>x.Fiyat>0); //tabloda en az 1 kayıt varsa true yoksa false
 
+//if (sonucVarmi)
+//{
+//    Console.WriteLine("Tabloda en az 1 kayıt var");
+//}
+//else
+//{
+//    Console.WriteLine("Tabloda hiç kayıt yok");
+//}
+////içerisinde a harfi geçen ürün varmı
+//var eVarmi= await context.Urunler.Where(x=>x.UrunAdi.Contains("p")).AnyAsync(); //içerisinde e harfi geçen ürün varmı
+//Console.WriteLine(eVarmi);
+#endregion
+#region MaxAsync
+//var fiyat = await context.Urunler.MaxAsync(x=> x.Fiyat); //tablodaki en yüksek fiyatı getirir
+//Console.WriteLine(fiyat);
+#endregion
+#region MinAsync
+//var fiyat = await context.Urunler.MinAsync(x => x.Fiyat); //tablodaki en min fiyatı getirir
+//Console.WriteLine(fiyat);
+#endregion
+#region Distinct
+//sqldeki terkarlı  kayıtlar tekilleştirmek için kullanılır
+#endregion
+#region AllAsync
+
+#endregion
+#region SumAsync
+
+#endregion
 #endregion
 
 
